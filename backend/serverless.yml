@@ -1,0 +1,38 @@
+service: saas-app
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+
+  environment:
+    USERS_TABLE: UsersTable
+    JWT_SECRET: ${env:JWT_SECRET}
+    JWT_REFRESH_SECRET: ${env:JWT_REFRESH_SECRET}
+
+  httpApi:
+    cors: true
+
+functions:
+  signup:
+    handler: src/handlers/auth.signup
+    events:
+      - httpApi:
+          path: /signup
+          method: POST
+
+  login:
+    handler: src/handlers/auth.login
+    events:
+      - httpApi:
+          path: /login
+          method: POST
+
+  admin:
+    handler: src/handlers/user.getAdminData
+    events:
+      - httpApi:
+          path: /admin
+          method: GET
