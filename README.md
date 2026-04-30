@@ -1,38 +1,30 @@
 # 🚀 Serverless DevOps Platform
 
-A production-grade **serverless full-stack application** deployed on AWS, demonstrating modern DevOps practices including secure infrastructure, CI/CD automation, and global content delivery.
+A **production-grade, full-stack serverless application** deployed on AWS, demonstrating real-world DevOps practices including **Infrastructure as Code, CI/CD automation, secure cloud architecture, and incident recovery**.
 
 🔗 **Live Demo:** https://fidmann-digitalboost.com
 
 ---
 
-## 📌 Project Summary
+## 📌 Project Overview
 
-This project showcases how to design, build, and deploy a **scalable and secure cloud-native application** using AWS services.
+This project showcases the design and deployment of a **scalable, secure, and globally distributed cloud-native system**.
 
-It includes:
+It combines:
 
-* A React frontend served via a global CDN
-* A serverless backend powered by AWS Lambda
-* Secure API communication via API Gateway
-* Automated deployment using GitHub Actions (CI/CD)
+* A **React frontend** delivered via CDN
+* A **serverless backend** powered by AWS Lambda
+* Fully automated infrastructure and deployment workflows
 
 ---
 
 ## 🏗️ Architecture Overview
 
 ```text
-User → CloudFront → S3 (Private)
+User → CloudFront → S3 (Private, OAC)
              ↓
-        API Gateway → Lambda
+        API Gateway → Lambda → DynamoDB
 ```
-
-### Key Design Decisions:
-
-* **CloudFront CDN** for low-latency global delivery
-* **Private S3 bucket** secured via Origin Access Control (OAC)
-* **Serverless backend** to eliminate infrastructure management
-* **Custom domain + HTTPS** using Route 53 and ACM
 
 ---
 
@@ -42,69 +34,98 @@ User → CloudFront → S3 (Private)
 
 * React (Vite)
 * JavaScript (ES6+)
-* CSS
 
 ### Backend
 
 * AWS Lambda (Node.js)
-* Amazon API Gateway (REST)
+* Amazon API Gateway (HTTP API)
 
 ### Cloud & DevOps
 
-* Amazon S3 (static hosting)
+* Amazon S3 (private static hosting)
 * Amazon CloudFront (CDN)
-* AWS Route 53 (DNS management)
+* Amazon DynamoDB (NoSQL database)
+* AWS Route 53 (DNS)
 * AWS Certificate Manager (SSL/TLS)
-* GitHub Actions (CI/CD automation)
-* IAM (least-privilege access control)
+* Terraform (Infrastructure as Code)
+* GitHub Actions (CI/CD)
 
 ---
 
-## 🔐 Security Implementation
+## 🔐 Security & Best Practices
 
 * Private S3 bucket (no public access)
 * CloudFront Origin Access Control (OAC)
-* HTTPS enforced using ACM certificates
-* Least-privilege IAM policy for CI/CD
-* Secure environment variable handling
-* CORS properly configured for API access
+* HTTPS enforced via ACM
+* Least-privilege IAM roles
+* Secure API communication with CORS configuration
+* Environment variables managed securely
 
 ---
 
-## 🚀 CI/CD Pipeline (GitHub Actions)
+## 🚀 CI/CD Pipeline
 
 Automated deployment pipeline triggered on every push to `main`.
 
-### Workflow:
-
 ```text
-Push → GitHub Actions → Build → Deploy to S3 → CloudFront Invalidation
+Push → GitHub Actions → Build → Deploy → Invalidate Cache
 ```
 
-### Key Features:
+### Key Capabilities:
 
 * Automated React build (`npm run build`)
-* S3 sync deployment (`aws s3 sync`)
+* Deployment via `aws s3 sync`
 * CloudFront cache invalidation
-* Secure credentials via GitHub Secrets
+* Secure credentials using GitHub Secrets
+
+---
+
+## 🧠 Real-World Incident & Recovery (Key Highlight)
+
+During development, the **API Gateway was accidentally deleted**, causing complete backend failure.
+
+### Impact:
+
+* Frontend displayed **“Failed to fetch”**
+* Backend became unreachable
+
+### Resolution:
+
+* Recreated infrastructure using **Terraform**
+* Identified and fixed missing **CORS configuration**
+* Restored full system functionality without manual rebuild
+
+💡 **Key Insight:**
+This reinforced the importance of **Infrastructure as Code (IaC)** for reproducibility, disaster recovery, and production reliability.
+
+---
+
+## 🔄 DevOps Highlights
+
+* Infrastructure fully defined using **Terraform**
+* Stateless backend using Lambda
+* Automated deployment pipeline with GitHub Actions
+* Debugging of real production-like failures (CORS, API Gateway deletion)
+* DNS and domain integration (Namecheap → Route 53)
+* Global content delivery via CloudFront
 
 ---
 
 ## 🌐 Domain & Networking
 
-* Domain purchased via Namecheap
-* DNS delegated to AWS Route 53
-* A records (Alias) mapped to CloudFront
-* HTTPS enabled with ACM (us-east-1)
+* Custom domain via Namecheap
+* DNS managed in Route 53
+* CloudFront distribution with HTTPS
+* ACM certificate (us-east-1)
 
 ---
 
 ## 🧪 Testing & Validation
 
-* Verified DNS propagation using `dig` and `nslookup`
-* Confirmed backend connectivity via frontend API calls
-* Validated CloudFront caching and invalidation
-* Ensured zero public access to S3 bucket
+* DNS propagation verified using `dig` and `nslookup`
+* API endpoints tested via frontend and Postman
+* CloudFront caching behavior validated
+* S3 access restrictions confirmed
 
 ---
 
@@ -113,21 +134,22 @@ Push → GitHub Actions → Build → Deploy to S3 → CloudFront Invalidation
 ```text
 serverless-devops-platform/
 │
-├── frontend/              # React application
+├── infrastructure/        # Terraform IaC
+│   ├── main.tf
+│   ├── variables.tf
+│   └── outputs.tf
+│
+├── frontend/              # React app
 │   ├── src/
-│   ├── public/
-│   └── dist/              # Build output
+│   └── dist/
 │
-├── backend/              # Lambda functions
-│   └── lambda/
+├── backend/               # Lambda functions
 │
-├── .github/workflows/    # CI/CD pipeline
+├── .github/workflows/     # CI/CD pipeline
 │   └── deploy.yml
 │
-├── screenshots/          # Project proof
-│
-├── README.md
-└── .gitignore
+├── screenshots/
+└── README.md
 ```
 
 ---
@@ -136,51 +158,58 @@ serverless-devops-platform/
 
 * Live application (custom domain)
 * CloudFront distribution
-* S3 bucket (private configuration)
-* Route 53 hosted zone
-* API Gateway endpoints
+* Private S3 bucket configuration
+* API Gateway routes
 * Lambda functions
-* CI/CD pipeline execution
+* DynamoDB table
+* GitHub Actions pipeline execution
 
 ---
 
-## 🧠 Key Learnings
+## 📈 Future Improvements
 
-* Implementing secure S3 + CloudFront integration using OAC
-* Managing DNS delegation (Namecheap → Route 53)
-* Debugging real-world issues (CORS, AccessDenied, DNS propagation)
-* Designing scalable serverless architectures
-* Building automated CI/CD pipelines with GitHub Actions
-
----
-
-## 🔄 Future Enhancements
-
-* Multi-environment deployment (dev/staging/prod)
-* IAM role-based authentication (OIDC) for CI/CD
-* CloudFront logging and monitoring
-* Performance optimization via cache-control headers
-* JWT-based authentication system
+* Multi-environment setup (dev/staging/prod)
+* JWT-based authentication
+* Monitoring with CloudWatch dashboards & alarms
+* CI/CD with OIDC (no static credentials)
+* Infrastructure modularization
 
 ---
 
 ## 👨‍💻 Author
 
 **Fidelis Erubami**
-DevOps Engineer
+DevOps Engineer | AWS | Terraform | CI/CD
 
 ---
 
-## ⭐ Project Value
+## ⭐ Why This Project Matters
 
-This project demonstrates **real-world DevOps capabilities**, including:
+This is not a tutorial project.
 
-* End-to-end cloud deployment
-* Infrastructure security best practices
-* Automated delivery pipelines
-* Production-ready architecture
+It demonstrates:
 
----
+* Real-world **system design**
+* Hands-on **cloud engineering**
+* Practical **DevOps problem-solving**
+* Ability to **recover from infrastructure failures**
+
 ## Below are screenshots of workflow:
-
-> This is not a tutorial project — it reflects hands-on experience building and troubleshooting a real cloud system.
+![Terraform Initialization](./img/01-terraform-init-success.png)
+![Infrastructure Provisioning](./img/02-terraform-infrastructure-deployment.png)
+![DynamoDB Schema](./img/03-dynamodb-table-design.png)
+![Lambda Overview](./img/04-lambda-function-overview.png)
+![Lambda Logic](./img/05-lambda-function-code.png)
+![API Gateway Endpoint](./img/06-api-gateway-endpoint.png)
+![Lambda Integration Response](./img/07-api-gateway-lambda-response.png)
+![CORS Configuration](./img/08-api-gateway-cors-config.png)
+![S3 Access Control (Private)](./img/09-s3-private-access-control.png)
+![Frontend Deployment](./img/10-s3-frontend-deployment.png)
+![CloudFront Distribution](./img/11-cloudfront-distribution.png)
+![Live CDN Deployment](./img/12-cloudfront-distribution-live.png)
+![Local Dev Environment](./img/13-local-development-environment.png)
+![DNS Delegation (Namecheap → Route 53)](./img/14-domain-nameserver-delegation.png)
+![Route 53 DNS Configuration](./img/15-route53-dns-records.png)
+![DNS Resolution Validation](./img/16-dns-resolution-verification.png)
+![Production Domain (Live App)](./img/17-live-application-production-domain.png)
+![CI/CD Pipeline Execution](./img/18-github-actions-cicd-success.png)
